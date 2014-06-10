@@ -1,0 +1,139 @@
+﻿@model IEnumerable<WebApplication1.Models.Customer>
+
+@{
+    ViewBag.Title = "Index";
+    if (IsAjax) { Layout = ""; }
+}
+
+<h2>Index</h2>
+
+@using (Ajax.BeginForm(new AjaxOptions { UpdateTargetId = "Main" }))
+{
+    <p>
+        First Name: @Html.TextBox("searchFirstName", ViewBag.FilterFirstName as string)
+        Middle Name: @Html.TextBox("searchMiddleName", ViewBag.FilterMiddleName as string)
+        Last Name: @Html.TextBox("searchLastName", ViewBag.FilterLastName as string) 
+        Title: @Html.TextBox("searchTitle", ViewBag.FilterTitle as string)
+        <input type="submit" value="Search" />
+    </p>
+}
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.NameStyle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+            @*@Html.DropDownListFor(model => model.Title, ViewBag.TitleList as SelectList, "--Select--")*@
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MiddleName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Suffix)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CompanyName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SalesPerson)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmailAddress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Phone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PasswordHash)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PasswordSalt)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.rowguid)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ModifiedDate)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.NameStyle)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FirstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MiddleName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LastName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Suffix)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CompanyName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SalesPerson)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EmailAddress)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Phone)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PasswordHash)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PasswordSalt)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.rowguid)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ModifiedDate)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.CustomerID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.CustomerID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.CustomerID })
+        </td>
+    </tr>
+}
+
+</table>
+
+@using PagedList
+@using PagedList.Mvc
+@{
+    var data = Model as IPagedList<WebApplication1.Models.Customer>;
+}
+@Html.PagedListPager(data, page => Url.Action("Index", new 
+{ 
+    page, 
+    filterFirstName = ViewBag.FilterFirstName,
+    filterMiddleName = ViewBag.FilterMiddleName,
+    filterLastName = ViewBag.FilterLastName, 
+    filterTitle = ViewBag.FilterTitle
+}),
+PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing("#Main"))
